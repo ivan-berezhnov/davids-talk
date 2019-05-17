@@ -41,9 +41,10 @@ jobs:
           name: Deploying to Production
           command: |
             source build-env
-            build-exec  "scp -r ${MASTER_DIR} ${SSH_ADD}"
             echo -e "Removing files and folders that should not be committed to Production...\n"
             build-exec "xargs rm -rf < .pantheon_ignored"
+            echo -e "Copy files to Production...\n"
+            build-exec  "scp -r ${MASTER_DIR} ${SSH_ADD}"
             echo -e "Removing sandbox container and files...\n"
             build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
 
