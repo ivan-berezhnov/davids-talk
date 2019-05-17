@@ -61,9 +61,12 @@ fix_permissions ()
 ## Remove composer.lock
 remove_composer_lock ()
 {
+    set +e
     echo "Removeing composer.lock..."
 	cd $PROJECT_ROOT
 	rm composer.lock
+	rm -rf vendor
+	set -e
 }
 
 # Installing composer
