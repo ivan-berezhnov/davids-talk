@@ -10,13 +10,6 @@ run-envvars: &run-envvars
   command: |
     echo 'source build-env' > $BASH_ENV
 
-git-config: &git-config
-  name: Git configuration
-  command: |
-    git config --global user.email "$GIT_EMAIL"
-    git config --global user.name "Circle CI"
-    git config --global core.fileMode false
-
 jobs:
   build-sandbox:
     <<: *init
@@ -33,37 +26,32 @@ jobs:
       - run:
           name: Build sandbox
           command: |
-           echo "export SECRET_TERMINUS_TOKEN=${TERMINUS_TOKEN}" >> $BASH_ENV
            source build-env
            sandbox-init
 
 
-  deploy-to-pantheon:
+  deploy-to-production:
     <<: *init
     steps:
       - run:
           <<: *run-envvars
       - run:
-          name: Deploying to Pantheon
+          name: Deploying to Production
           command: |
-           echo "export SECRET_TERMINUS_TOKEN=${TERMINUS_TOKEN}" >> $BASH_ENV
+           echo "Server IP"
+           curl ifconfig.me
            source build-env
-           build-exec "git config --global user.name \"Circle CI\""
-           echo -e "Removing files and folders that should not be committed to Pantheon...\n"
+           echo -e "Removing files and folders that should not be committed to Production...\n"
            build-exec "xargs rm -rf < .pantheon_ignored"
-           echo -e "Adding Pantheon remote to git...\n"
-           build-exec "fin terminus connection:info --field git_url $TERMINUS_SITE.dev |grep ssh |xargs git remote add pantheon"
-           echo -e "Performing commit and push...\n"
-           build-exec "git add -f . > /dev/null && git commit -m \"Deploy to Pantheon.\" > /dev/null && git push -f pantheon master"
            echo -e "Removing sandbox container and files...\n"
            build-exec "fin project remove && rm -rf ${REMOTE_BUILD_DIR}"
 
 workflows:
   version: 2
-  Pantheon-workflow:
+  ivo-workflow:
     jobs:
       - build:
-          context: org-pantheon
+          context: org-ivo
 
       - build-sandbox:
           requires:
@@ -73,10 +61,10 @@ workflows:
               ignore:
                 - master
 
-      - deploy-to-pantheon:
+      - deploy-to-production:
           requires:
             - build
-          context: org-pantheon
+          context: org-ivo
           filters:
             branches:
               only:
