@@ -42,7 +42,10 @@ jobs:
           command: |
             source build-env
             echo -e "Removing files and folders that should not be committed to Production...\n"
-            build-exec "xargs rm -rf < .pantheon_ignored"
+            build-exec "rm /home/ivo/builds/davids-talk-master/web/sites/default/settings.local.php"
+            build-exec "rm -rf /home/ivo/builds/davids-talk-master/web/sites/default/files"
+            build-exec "cp /home/ivo/builds/davids-talk-master/.docksal/settings/settings.prod.php  /home/ivo/builds/davids-talk-master/web/sites/default"
+            build-exec "echo ${PROD_DB} >> /home/ivo/builds/davids-talk-master/web/sites/default/settings.prod.php"
             echo -e "Copy files to Production...\n"
             build-exec  "scp -r ${MASTER_DIR} ${SSH_ADD}"
             echo -e "Removing sandbox container and files...\n"
