@@ -46,8 +46,9 @@ copy_settings_file()
 # Copy repo settings.php file into project
 copy_settings ()
 {
-	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/setting.stage_file_proxy.php" "${SITEDIR_PATH}/setting.stage_file_proxy.php"
+	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/settings.php" "${SITEDIR_PATH}/settings.php"
 	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/settings.local.php" "${SITEDIR_PATH}/settings.local.php"
+	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/setting.stage_file_proxy.php" "${SITEDIR_PATH}/setting.stage_file_proxy.php"
 }
 
 # Fix file/folder permissions
@@ -56,8 +57,8 @@ fix_permissions ()
 	echo "Making site directory writable..."
 	chmod 755 "${SITEDIR_PATH}"
 }
-
-# Remove composer.lock
+#
+## Remove composer.lock
 remove_composer_lock ()
 {
     echo "Removeing composer.lock..."
@@ -70,7 +71,7 @@ composer_install ()
 {
     echo "Installing composer..."
 	cd $PROJECT_ROOT
-	php -d memory_limit=256M /usr/local/bin/composer install --no-ansi --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --ignore-platform-reqs
+	composer install --no-ansi --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --ignore-platform-reqs
 }
 
 # Install site
@@ -106,10 +107,11 @@ post_install ()
 
 
 #-------------------------- Execution --------------------------------
-fix_permissions
-site_install
-copy_settings
+remove_composer_lock
 composer_install
-theme_install
-post_install
+copy_settings
+fix_permissions
+time site_install
+#theme_install
+#post_install
 #-------------------------- END: Execution --------------------------------
