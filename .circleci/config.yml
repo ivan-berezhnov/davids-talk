@@ -11,6 +11,12 @@ run-envvars: &run-envvars
     echo 'source build-env' > $BASH_ENV
 
 jobs:
+  sandbox:
+    <<: *init
+    steps:
+      - run:
+          <<: *run-envvars
+
   build:
     <<: *init
     steps:
@@ -22,12 +28,6 @@ jobs:
           command: |
             source build-env
             sandbox-init
-
-  sandbox:
-    <<: *init
-    steps:
-      - run:
-          <<: *run-envvars
 
   deploy:
     <<: *init
@@ -45,8 +45,7 @@ jobs:
             build-exec "rm /home/ivo/builds/davids-talk-master/web/sites/default/settings.local.php"
             build-exec "rm -rf /home/ivo/builds/davids-talk-master/web/sites/default/files"
             build-exec "cp /home/ivo/builds/davids-talk-master/.docksal/settings/settings.prod.php  /home/ivo/builds/davids-talk-master/web/sites/default"
-            build-exec "echo ${SECRET_PROD_DB} >> /home/ivo/builds/davids-talk-master/web/sites/default/settings.prod.php"
-            build-exec "ssh devids@devids.ftp.tools "rm -rf /home/devids/davids-talk.academy/www/*""
+            build-exec "echo '${SECRET_PROD_DB}' >> /home/ivo/builds/davids-talk-master/web/sites/default/settings.prod.php"
             echo -e "Copy files to Production...\n"
             build-exec  "scp -r ${MASTER_DIR} ${SSH_ADD}"
             echo -e "Removing sandbox container and files...\n"
