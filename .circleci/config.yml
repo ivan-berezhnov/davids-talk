@@ -41,7 +41,7 @@ jobs:
           name: Deploying to Production
           command: |
             source build-env
-            build-exec  "scp ~/builds/davids-talk-master/* ${SSH_ADD}"
+            build-exec  "scp ${MASTER_DIR} ${SSH_ADD}"
             echo -e "Removing files and folders that should not be committed to Production...\n"
             build-exec "xargs rm -rf < .pantheon_ignored"
             echo -e "Removing sandbox container and files...\n"
