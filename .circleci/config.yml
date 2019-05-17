@@ -34,6 +34,9 @@ jobs:
     steps:
       - run:
           <<: *run-envvars
+      - attach_workspace:
+          at: /home/agent
+      - run: echo $PRIVATE_KEY | base64 -d > /home/agent/.ssh/id_rsa
       - run:
           name: Deploying to Production
           command: |
@@ -42,10 +45,11 @@ jobs:
            build-exec "pwd"
            echo "\n"
            source build-env
+           build-exec  "scp /home/ivo/builds/davids-talk-master ${SSH_ADD}"
            echo -e "Removing files and folders that should not be committed to Production...\n"
            build-exec "xargs rm -rf < .pantheon_ignored"
            echo -e "Removing sandbox container and files...\n"
-           build-exec "fin project remove && rm -rf ${REMOTE_BUILD_DIR}"
+           build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
 
 workflows:
   version: 2
