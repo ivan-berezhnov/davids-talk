@@ -11,12 +11,6 @@ run-envvars: &run-envvars
     echo 'source build-env' > $BASH_ENV
 
 jobs:
-  build-sandbox:
-    <<: *init
-    steps:
-      - run:
-          <<: *run-envvars
-
   build:
     <<: *init
     steps:
@@ -26,10 +20,16 @@ jobs:
       - run:
           name: Build sandbox
           command: |
-           source build-env
-           sandbox-init
+            source build-env
+            sandbox-init
 
-  deploy-to-production:
+  sandbox:
+    <<: *init
+    steps:
+      - run:
+          <<: *run-envvars
+
+  deploy:
     <<: *init
     steps:
       - run:
@@ -40,15 +40,13 @@ jobs:
       - run:
           name: Deploying to Production
           command: |
-           echo "Server IP"
-           build-exec "curl ifconfig.me"
-           source build-env
-           build-exec "ls -la /home/agent/.ssh"
-           build-exec  "scp /home/ivo/builds/davids-talk-master ${SSH_ADD}"
-           echo -e "Removing files and folders that should not be committed to Production...\n"
-           build-exec "xargs rm -rf < .pantheon_ignored"
-           echo -e "Removing sandbox container and files...\n"
-           build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
+            source build-env
+            build-exec  "scp ~/builds/davids-talk-master/* ${SSH_ADD}"
+            echo -e "Removing files and folders that should not be committed to Production...\n"
+            build-exec "xargs rm -rf < .pantheon_ignored"
+            echo -e "Removing sandbox container and files...\n"
+            build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
+
 
 workflows:
   version: 2
@@ -57,7 +55,7 @@ workflows:
       - build:
           context: org-ivo
 
-      - build-sandbox:
+      - sandbox:
           requires:
             - build
           filters:
@@ -65,7 +63,7 @@ workflows:
               ignore:
                 - master
 
-      - deploy-to-production:
+      - deploy:
           requires:
             - build
           context: org-ivo
