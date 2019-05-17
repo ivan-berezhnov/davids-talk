@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+#: exec_target = cli
+
+## Initialize/reinstall site
+##
+## Usage: fin init-site
+
+# Abort if anything fails
+set -e
+
+#-------------------------- Settings --------------------------------
+
+# PROJECT_ROOT and DOCROOT are set as env variables in cli
+SITE_DIRECTORY="default"
+DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
+THEME_PATH="${DOCROOT_PATH}/themes/custom/davids"
+SITEDIR_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}"
+
+#-------------------------- END: Settings --------------------------------
+
+#-------------------------- Helper functions --------------------------------
+
+# Copy a settings file.
+# Skips if the destination file already exists.
+# @param $1 source file
+# @param $2 destination file
+copy_settings_file()
+{
+	local source="$1"
+	local dest="$2"
+
+	if [[ ! -f $dest ]]; then
+		echo "Copying ${dest}..."
+		cp $source $dest
+	else
+		echo "${dest} already in place."
+		cp -f $source $dest
+	fi
+}
+
+#-------------------------- END: Helper functions --------------------------------
+
+#-------------------------- Functions --------------------------------
+
+# Copy repo settings.php file into project
+copy_settings ()
+{
+	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/setting.stage_file_proxy.php" "${SITEDIR_PATH}/setting.stage_file_proxy.php"
+	copy_settings_file "${PROJECT_ROOT}/.docksal/settings/settings.local.php" "${SITEDIR_PATH}/settings.local.php"
+}
+
+# Fix file/folder permissions
+fix_permissions ()
+{
+	echo "Making site directory writable..."
+	chmod 755 "${SITEDIR_PATH}"
+}
+
+# Remove composer.lock
+remove_composer_lock ()
+{
+    echo "Removeing composer.lock..."
+	cd $PROJECT_ROOT
+	rm composer.lock
+}
+
+# Installing composer
+composer_install ()
+{
+    echo "Installing composer..."
+	cd $PROJECT_ROOT
+	php -d memory_limit=256M /usr/local/bin/composer install --no-ansi --no-dev --no-interaction --optimize-autoloader --no-progress --prefer-dist --ignore-platform-reqs
+}
+
+# Install site
+site_install ()
+{
+    echo "Installing site..."
+	cd $DOCROOT_PATH
+	# We disable email sending here so site-install does not return an error
+	php -d sendmail_path=/bin/true /usr/local/bin/drush site-install -y --site-name='Jonnard Tools'
+}
+
+# Build theme
+theme_install ()
+{
+    echo "Building theme..."
+    cd $THEME_PATH
+	npm install
+	npm run production
+}
+
+# Post install commands
+post_install ()
+{
+    cd $DOCROOT_PATH
+    drush cr
+    drush updb -y
+    drush cr
+    drush cim -y
+    drush uli
+    drush en stage_file_proxy -y
+}
+#-------------------------- END: Functions --------------------------------
+
+
+#-------------------------- Execution --------------------------------
+fix_permissions
+site_install
+copy_settings
+composer_install
+theme_install
+post_install
+#-------------------------- END: Execution --------------------------------

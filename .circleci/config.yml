@@ -1,0 +1,83 @@
+version: 2
+
+init: &init
+  docker:
+    - image: docksal/ci-agent:php
+  working_directory: /home/agent/build
+
+run-envvars: &run-envvars
+  name: Configuring build environment
+  command: |
+    echo 'source build-env' > $BASH_ENV
+
+git-config: &git-config
+  name: Git configuration
+  command: |
+    git config --global user.email "$GIT_EMAIL"
+    git config --global user.name "Circle CI"
+    git config --global core.fileMode false
+
+jobs:
+  build-sandbox:
+    <<: *init
+    steps:
+      - run:
+          <<: *run-envvars
+
+  build:
+    <<: *init
+    steps:
+      - run:
+          <<: *run-envvars
+      - checkout
+      - run:
+          name: Build sandbox
+          command: |
+           echo "export SECRET_TERMINUS_TOKEN=${TERMINUS_TOKEN}" >> $BASH_ENV
+           source build-env
+           sandbox-init
+
+
+  deploy-to-pantheon:
+    <<: *init
+    steps:
+      - run:
+          <<: *run-envvars
+      - run:
+          name: Deploying to Pantheon
+          command: |
+           echo "export SECRET_TERMINUS_TOKEN=${TERMINUS_TOKEN}" >> $BASH_ENV
+           source build-env
+           build-exec "git config --global user.name \"Circle CI\""
+           echo -e "Removing files and folders that should not be committed to Pantheon...\n"
+           build-exec "xargs rm -rf < .pantheon_ignored"
+           echo -e "Adding Pantheon remote to git...\n"
+           build-exec "fin terminus connection:info --field git_url $TERMINUS_SITE.dev |grep ssh |xargs git remote add pantheon"
+           echo -e "Performing commit and push...\n"
+           build-exec "git add -f . > /dev/null && git commit -m \"Deploy to Pantheon.\" > /dev/null && git push -f pantheon master"
+           echo -e "Removing sandbox container and files...\n"
+           build-exec "fin project remove && rm -rf ${REMOTE_BUILD_DIR}"
+
+workflows:
+  version: 2
+  Pantheon-workflow:
+    jobs:
+      - build:
+          context: org-pantheon
+
+      - build-sandbox:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - deploy-to-pantheon:
+          requires:
+            - build
+          context: org-pantheon
+          filters:
+            branches:
+              only:
+                - master
