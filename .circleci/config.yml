@@ -42,9 +42,8 @@ jobs:
           command: |
            echo "Server IP"
            build-exec "curl ifconfig.me"
-           build-exec "pwd"
-           echo "\n"
            source build-env
+           build-exec "ls -la /home/agent/.ssh"
            build-exec  "scp /home/ivo/builds/davids-talk-master ${SSH_ADD}"
            echo -e "Removing files and folders that should not be committed to Production...\n"
            build-exec "xargs rm -rf < .pantheon_ignored"
