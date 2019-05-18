@@ -29,5 +29,3 @@
 *.log
 *.sql
 
-# Ignore Composer lock file
-composer.lock
