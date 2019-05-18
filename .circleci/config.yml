@@ -38,7 +38,7 @@ jobs:
           name: Deploying to Production
           command: |
             source build-env
-            build-exec  "ssh devids@devids.ftp.tools -t bash -ci 'sh deploy.sh'"
+            build-exec  "ssh devids@devids.ftp.tools 'sh deploy.sh'"
             echo -e "Removing sandbox container and files...\n"
             build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
 
