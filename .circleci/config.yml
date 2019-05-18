@@ -34,21 +34,11 @@ jobs:
     steps:
       - run:
           <<: *run-envvars
-      - attach_workspace:
-          at: /home/agent
-      - run: echo $PRIVATE_KEY | base64 -d > /home/agent/.ssh/id_rsa
       - run:
           name: Deploying to Production
           command: |
             source build-env
-            echo -e "Removing files and folders that should not be committed to Production...\n"
-            build-exec "rm /home/ivo/builds/davids-talk-master/web/sites/default/settings.local.php"
-            build-exec "rm -rf /home/ivo/builds/davids-talk-master/web/sites/default/files"
-            build-exec "cp /home/ivo/builds/davids-talk-master/.docksal/settings/settings.prod.php  /home/ivo/builds/davids-talk-master/web/sites/default"
-            build-exec "echo '${SECRET_PROD_DB}' >> /home/ivo/builds/davids-talk-master/web/sites/default/settings.prod.php"
-            echo -e "Copy files to Production...\n"
-            build-exec "tar -czvf master.tar.gz ${MASTER_DIR}"
-            build-exec  "scp -r master.tar.gz ${SSH_ADD}"
+            build-exec  "ssh devids@devids.ftp.tools -t bash -ci 'sh deploy.sh'"
             echo -e "Removing sandbox container and files...\n"
             build-exec "fin p remove && rm -rf ${REMOTE_BUILD_DIR}"
 

@@ -114,7 +114,7 @@ remove_composer_lock
 composer_install
 copy_settings
 fix_permissions
-#time site_install
+time site_install
 #theme_install
 #post_install
 #-------------------------- END: Execution --------------------------------
