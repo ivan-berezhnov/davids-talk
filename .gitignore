@@ -24,8 +24,7 @@
 # Ignore .env files as they are personal
 /.env
 
-# Logs and databases #
+# Logs #
 ######################
 *.log
-*.sql
 
