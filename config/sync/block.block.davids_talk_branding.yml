@@ -1,0 +1,25 @@
+uuid: 569b87c7-5159-4243-a039-f20c8d9d0e19
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: NDwadleLD3YVSbDUaakxyYZyINYtkFtOVGShfq4kWy8
+id: davids_talk_branding
+theme: davids_talk
+region: navbar_branding
+weight: -7
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  provider: system
+  label_display: '0'
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: true
+visibility: {  }

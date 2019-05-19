@@ -1,0 +1,22 @@
+uuid: 99deea7a-021e-403c-b1a1-e4689496a613
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: za-39d5WDUg6XvbyqSnuVYEeq6QM4qKJxW8MnoAha5A
+id: davids_talk_search
+theme: davids_talk
+region: header
+weight: -1
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: Search
+  provider: search
+  label_display: visible
+visibility: {  }

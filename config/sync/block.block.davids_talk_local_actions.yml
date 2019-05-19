@@ -1,0 +1,20 @@
+uuid: 259f6585-799c-4e5a-be3d-7ce7883d3399
+langcode: en
+status: true
+dependencies:
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: davids_talk_local_actions
+theme: davids_talk
+region: content
+weight: -4
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

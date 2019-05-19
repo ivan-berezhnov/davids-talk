@@ -1,0 +1,22 @@
+uuid: 36252662-ab2e-45cd-9e8f-4baff62e0656
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: davids_talk_powered
+theme: davids_talk
+region: footer
+weight: -2
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

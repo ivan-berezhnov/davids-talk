@@ -1,0 +1,22 @@
+uuid: 34aa0535-f18a-4bfa-9109-0d1f7fb88674
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: davids_talk_messages
+theme: davids_talk
+region: header
+weight: -2
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,22 @@
+uuid: 918d7a8c-8df8-4f0c-823c-390e6f9464a6
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: davids_talk_content
+theme: davids_talk
+region: content
+weight: -6
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }

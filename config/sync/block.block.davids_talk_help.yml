@@ -1,0 +1,22 @@
+uuid: 5de7f976-0a68-43fa-9d91-2b2b71e4950f
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: davids_talk_help
+theme: davids_talk
+region: header
+weight: -3
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,5 @@
+# Schema for the configuration files of the Davids Talk Academy theme.
+
+davids_talk.settings:
+  type: theme_settings
+  label: 'Davids Talk Academy settings'

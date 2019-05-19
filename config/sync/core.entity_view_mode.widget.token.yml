@@ -1,0 +1,10 @@
+uuid: 442e4711-d502-4f33-9eb6-451d9e0a542f
+langcode: en
+status: true
+dependencies:
+  module:
+    - widget_engine
+id: widget.token
+label: Token
+targetEntityType: widget
+cache: true

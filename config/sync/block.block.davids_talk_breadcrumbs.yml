@@ -1,0 +1,22 @@
+uuid: b9e878e9-0fcf-4903-ba5a-e93ae1d01678
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: davids_talk_breadcrumbs
+theme: davids_talk
+region: header
+weight: -6
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

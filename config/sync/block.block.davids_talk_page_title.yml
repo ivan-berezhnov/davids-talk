@@ -1,0 +1,20 @@
+uuid: f84b8fb8-0684-4c36-ba43-bbc83f6819c0
+langcode: en
+status: true
+dependencies:
+  theme:
+    - davids_talk
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: davids_talk_page_title
+theme: davids_talk
+region: header
+weight: -5
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

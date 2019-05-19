@@ -1,0 +1,10 @@
+style:
+  version: VERSION
+  css:
+    theme:
+      assets/css/davids_talk.style.css: {}
+  js:
+    assets/js/davids_talk.script.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

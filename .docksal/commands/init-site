@@ -83,7 +83,7 @@ site_install ()
     echo "Installing site..."
 	cd $DOCROOT_PATH
 	# We disable email sending here so site-install does not return an error
-	php -d sendmail_path=/bin/true /usr/local/bin/drush site-install -y --site-name='Davids Talk Academy'
+	php -d sendmail_path=/bin/true /usr/local/bin/drush site-install -y --site-name='Davids Talk Academy' --account-name=admin --account-pass=admin
 }
 
 # Build theme

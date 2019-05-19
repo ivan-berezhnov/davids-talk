@@ -1,0 +1,14 @@
+uuid: 16573cab-b3cf-44af-bad3-f669f5b03236
+name: 'Davids Talk Academy'
+mail: admin@example.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
